@@ -1,4 +1,4 @@
-//Numeri Perfetti
+//Stampa Numeri Perfetti
 #include <stdio.h>
 int check_num(long int inf, long int sup);
 int perfect_num(long int inf, long int sup);
