@@ -1,0 +1,38 @@
+//Analisi Struttura Algebrica di un Insieme
+#include <stdio.h>
+#define MAX 100
+int inserimento(int insieme[]);
+int scelta();
+int commutativa(int insieme[], int count, int relazione);
+
+int semigruppo(int insieme[], int count, int relazione, int commutativo);
+
+int monoide(int insieme[], int count, int relazione, int commutativo);
+
+int gruppo(int insieme[], int count, int relazione, int commutativo);
+
+int abeliano(insieme[], int count, int relazione, int commutativo);
+
+
+int main(){
+    int insieme[MAX]={0}, simmetrico[MAX]={0}, count, neutro, *neutro_ptr, relazione, commutativo=0;
+    *neutro_ptr=&neutro;
+    printf("Analisi Struttura Algebrica di un Insieme intero in N (MAX 100 elementi)\n----------------------------\n");
+    count=inserimento(insieme);
+    relazione=scelta();
+    commutativo=commutativa(insieme, count, relazione);
+    if(semigruppo(insieme, count, relazione, commutativo))
+        if(monoide(insieme, count, relazione, commutativo))
+            if(gruppo(insieme, count, relazione, commutativo))
+                if(abeliano(insieme, count, relazione, commutativo))
+    return 0;
+}
+
+int inserimento(int insieme[]) {
+    int num=0;
+    for(int i=0; i<100; i++) {
+        printf("Inserisci il %d* numero: ", i+1);
+        if
+    }
+    return j;
+}
