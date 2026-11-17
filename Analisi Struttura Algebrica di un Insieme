@@ -1,38 +1,104 @@
 //Analisi Struttura Algebrica di un Insieme
 #include <stdio.h>
-#define MAX 100
+#include <math.h>
+#include <stdlib.h>
+#define MAX 10000
 int inserimento(int insieme[]);
 int scelta();
-int commutativa(int insieme[], int count, int relazione);
-
-int semigruppo(int insieme[], int count, int relazione, int commutativo);
-
-int monoide(int insieme[], int count, int relazione, int commutativo);
-
-int gruppo(int insieme[], int count, int relazione, int commutativo);
-
-int abeliano(insieme[], int count, int relazione, int commutativo);
-
+int scorrimento(int insieme[], int count, int scelta, int *neutro_ptr);
+int checkStruttura(int insieme[i], int count, int scelta, int &neutro_ptr);
+int checkNeutro(int insieme[i], int count, int scelta);
+stampa(insieme, count, relazione, neutro);
 
 int main(){
-    int insieme[MAX]={0}, simmetrico[MAX]={0}, count, neutro, *neutro_ptr, relazione, commutativo=0;
-    *neutro_ptr=&neutro;
-    printf("Analisi Struttura Algebrica di un Insieme intero in N (MAX 100 elementi)\n----------------------------\n");
+    int insieme[MAX]={0}, count, neutro, *neutro_ptr, scelta, relazione;
+    neutro_ptr=&neutro;
+    printf("Analisi di una Struttura Algebrica di un Insieme Z con modulo m\n----------------------------\n");
     count=inserimento(insieme);
-    relazione=scelta();
-    commutativo=commutativa(insieme, count, relazione);
-    if(semigruppo(insieme, count, relazione, commutativo))
-        if(monoide(insieme, count, relazione, commutativo))
-            if(gruppo(insieme, count, relazione, commutativo))
-                if(abeliano(insieme, count, relazione, commutativo))
+    scelta=scelta();
+    relazione=scorrimento(insieme, count, scelta, &neutro);
+    stampa(insieme, relazione, neutro);
     return 0;
 }
 
 int inserimento(int insieme[]) {
-    int num=0;
-    for(int i=0; i<100; i++) {
-        printf("Inserisci il %d* numero: ", i+1);
-        if
+    int num;
+    printf("Inserisci modulo m (m MAX = 10000): ");
+    scanf("%d", &num);
+    if(num>MAX) {
+        printf("m = 10000 poichè il modulo inserito è maggiore del massimo\n");
+        num=MAX;
     }
-    return j;
+    for(int i=1; i<num; i++) {
+        insieme[i]=i;
+    }
+    return num;
+}
+
+int scelta() {
+    int scelta;
+    while(1) {
+        printf("\n----------------\nScegli una relazione fra le seguenti\n");
+        printf("1: Addizione (+)\n2: Sottrazione (-)\n3: Moltiplicazione(·)\n4: Divisione(/)\n5: Potenza(a^b)\n6: Radice(b√a)\n7: Logaritmo(log_b(a))\nScelta: ");
+        scanf("%d", &scelta);
+        switch(scelta) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7: return scelta;
+            default: printf("Scelta non valida\n"); break;
+        }
+    }
+}
+
+int scorrimento(int insieme[], int count, int scelta, int *neutro_ptr) {
+    int relazione=0;
+    for(int i=0; i<count; i++){
+        relazione+=checkStruttura(insieme[i], count, scelta);
+        if(!(*neutro_ptr))
+            *neutro_ptr=checkNeutro(insieme[i], count, scelta);
+    }
+    return relazione==count;
+}
+
+int checkStruttura(int insieme[i], int count, int scelta, int &neutro_ptr) {
+    int num=insieme[i], temp;
+    for(int i=0; i<count; i++) {
+        switch(relazione) {
+            case 1: 
+                if(((num+i)%count)==num)
+                    return 1;
+                break;
+            case 2:
+                if(((num-i)+count)==num)
+                    if(((i-num)+count)==num)
+                        return 1;
+                break;
+            case 3:
+                if(((num*i)%count)==num)
+                    return 1;
+                break;
+            case 4:
+                if(((num+i)%count)==num)
+                    return 1;
+                break;
+            case 5:
+                if(((num+i)%count)==num)
+                    return 1;
+                break;
+            case 6:
+                if(((num+i)%count)==num)
+                    return 1;
+                break;
+            case 7:
+                if(((num+i)%count)==num)
+                    return 1;
+                break;
+            default: break;
+        }
+    }
+    return 0;
 }
