@@ -1,0 +1,25 @@
+//Massimo degli elementi di ogni riga
+#include <stdio.h>
+#define COLONNE 4
+
+void massimiColonne(int A[][COLONNE], int nr, int massimi[]);
+
+int main() {
+    int A[3][4]={
+        {4, 12, 3, 8},
+        {9, 5, 7, 2},
+        {6, 10, 1, 15}
+    };
+    int massimi[COLONNE];
+    massimiColonne(A, 3, massimi);
+    for(int i=0; i<3; i++)
+        printf("Massimo Riga %d: %d\n", i+1, massimi[i]);
+    return 0;
+}
+
+void massimiColonne(int A[][COLONNE], int nr, int massimi[]) {
+    for(int i=0; i<nr; i++)
+        for(int j=(massimi[i]=0); j<COLONNE; j++)
+            if(massimi[i]<A[i][j])
+                massimi[i]=A[i][j];
+}
