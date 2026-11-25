@@ -1,0 +1,38 @@
+//Trasposta Matrice
+#include <stdio.h>
+#define N 3
+
+void stampaMatrice(int matrice[][N]);
+void trasponiMatrice(int matrice[][N]);
+
+int main() {
+    int matrice[N][N]={
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    printf("Matrice originale:\n");
+    stampaMatrice(matrice);
+    trasponiMatrice(matrice);
+    printf("\nMatrice trasposta:\n");
+    stampaMatrice(matrice);
+    return 0;
+}
+
+void stampaMatrice(int matrice[][N]) {
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++)
+            printf("%d\t", matrice[i][j]);
+    printf("\n");
+    }
+}
+
+void trasponiMatrice(int matrice[][N]) {
+    int temp[N];
+    for(int i=0; i<N; i++) 
+        for(int j=i; j<N; j++) {
+            temp[j]=matrice[i][j];
+            matrice[i][j]=matrice[j][i];
+            matrice[j][i]=temp[j];
+        }
+}
