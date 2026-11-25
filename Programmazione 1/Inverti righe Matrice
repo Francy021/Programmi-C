@@ -1,0 +1,38 @@
+//Inverti righe Matrice
+#include <stdio.h>
+#define RIGHE 3
+#define COLONNE 4
+void invertiRighe(int matrice[][COLONNE]);
+void stampa(int matrice[][COLONNE]);
+
+int main() {
+    int matrice[RIGHE][COLONNE]={
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+    printf("Matrice originale:\n");
+    stampa(matrice);
+    invertiRighe(matrice);
+    printf("\nMatrice invertita:\n");
+    stampa(matrice);
+    return 0;
+}
+
+void stampa(int matrice[][COLONNE]) {
+    for(int i=0; i<RIGHE; i++) {
+        for(int j=0; j<COLONNE; j++)
+            printf("%d\t", matrice[i][j]);
+    printf("\n");
+    }
+}
+
+void invertiRighe(int matrice[][COLONNE]) {
+    int temp[COLONNE];
+    for(int i=0; i<RIGHE/2; i++) 
+        for(int j=0; j<COLONNE; j++) {
+            temp[j]=matrice[i][j];
+            matrice[i][j]=matrice[RIGHE-i-1][j];
+            matrice[RIGHE-i-1][j]=temp[j];
+        }        
+}
