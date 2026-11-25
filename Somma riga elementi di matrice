@@ -11,7 +11,7 @@ int main() {
         {9, 10, 11 ,12}
     };
     int somme[3];
-    sommaRighe(A, 4, somme);
+    sommaRighe(A, 3, somme);
     for(int i=0; i<3; i++)
         printf("Somma Riga %d: %d\n", i+1, somme[i]);
     return 0;
@@ -19,6 +19,6 @@ int main() {
 
 void sommaRighe(int A[][COLONNE], int nr, int somme[]) {
     for(int i=0; i<nr; i++)
-        for(int j=(somme[i]=0); j<nr; j++)
+        for(int j=(somme[i]=0); j<COLONNE; j++)
             somme[i]+=A[i][j];
 }
