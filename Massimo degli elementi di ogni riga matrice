@@ -1,4 +1,4 @@
-//Massimo degli elementi di ogni riga
+//Massimo degli elementi di ogni riga matrice
 #include <stdio.h>
 #define COLONNE 4
 
@@ -10,7 +10,7 @@ int main() {
         {9, 5, 7, 2},
         {6, 10, 1, 15}
     };
-    int massimi[COLONNE];
+    int massimi[3];
     massimiColonne(A, 3, massimi);
     for(int i=0; i<3; i++)
         printf("Massimo Riga %d: %d\n", i+1, massimi[i]);
