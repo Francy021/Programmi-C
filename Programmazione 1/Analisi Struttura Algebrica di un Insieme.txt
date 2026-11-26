@@ -260,10 +260,6 @@ void checkGruppo(int inf, int modulo, int scelta, int neutro, int commutativo, i
 
 void stampa(int inf, int modulo, int scelta, int neutro, int commutativo, int semigruppo, int gruppo, int chiusura) {
     printf("\n---------------------------------------\n");
-    if(!chiusura) {
-        printf("L'operazione interna alla struttura algebrica non è definita per ogni elemento di Z modulo m.");
-        return;
-    }
     switch(scelta) {
         case 1: printf("+\t|"); break;
         case 2: printf("-\t|"); break;
@@ -288,6 +284,11 @@ void stampa(int inf, int modulo, int scelta, int neutro, int commutativo, int se
         printf("\n");    
     }
     printf("\n\n");
+    if(!chiusura) {
+        printf("L'operazione interna alla struttura algebrica non è definita per ogni elemento di Z modulo m.");
+        printf("Non esiste elemento neutro\n");
+        return;
+    }
     if(neutro!=-1)
         printf("Elemento Neutro = %d\n", neutro);
     else
