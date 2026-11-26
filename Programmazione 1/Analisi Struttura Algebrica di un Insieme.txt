@@ -1,110 +1,317 @@
-//Analisi Struttura Algebrica di un Insieme
+//Analisi Struttura Algebrica di un Insieme Z con modulo m
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#define MAX 10000
-int inserimento(int insieme[]);
-int scelta();
-int scorrimento(int insieme[], int count, int scelta, int *neutro_ptr);
-int checkStruttura(int insieme[i], int count, int scelta, int &neutro_ptr);
-int checkNeutro(int insieme[i], int count, int scelta);
-stampa(insieme, count, relazione, neutro);
+#define MAX 100
+void inserimento(int *inf, int *modulo);
+int sceltaFunc(int inf, int modulo, int *mcd);
+int mcdFunc(int inf, int modulo);
+void checkStruttura(int inf, int modulo, int scelta, int *neutro, int *commutativo, int *semigruppo, int *gruppo, int *chiusura);
+int checkChiusura(int inf, int modulo, int scelta, int *chiusura);
+void checkNeutro(int inf, int modulo, int scelta, int *neutro);
+void checkCommutativo(int inf, int modulo, int scelta, int *commutativo);
+int inverso(int num, int modulo);
+int checkSemigruppo(int inf, int modulo, int scelta, int *semigruppo);
+void checkGruppo(int inf, int modulo, int scelta, int neutro, int commutativo, int *gruppo);
+void stampa(int inf, int modulo, int scelta, int neutro, int commutativo, int semigruppo, int gruppo, int chiusura);
 
-int main(){
-    int insieme[MAX]={0}, count, neutro, *neutro_ptr, scelta, relazione;
-    neutro_ptr=&neutro;
+int main() {
+    int inf, modulo, mcd=1, neutro=-1, scelta, commutativo=0, semigruppo=0, gruppo=0, chiusura=0;
     printf("Analisi di una Struttura Algebrica di un Insieme Z con modulo m\n----------------------------\n");
-    count=inserimento(insieme);
-    scelta=scelta();
-    relazione=scorrimento(insieme, count, scelta, &neutro);
-    stampa(insieme, relazione, neutro);
+    inserimento(&inf, &modulo);
+    scelta=sceltaFunc(inf, modulo, &mcd);
+    if(scelta==4&&mcd!=1) chiusura=0;
+    else checkStruttura(inf, modulo, scelta, &neutro, &commutativo, &semigruppo, &gruppo, &chiusura);
+    stampa(inf, modulo, scelta, neutro, commutativo, semigruppo, gruppo, chiusura);
     return 0;
 }
 
-int inserimento(int insieme[]) {
+void inserimento(int *inf, int *modulo) {
     int num;
-    printf("Inserisci modulo m (m MAX = 10000): ");
-    scanf("%d", &num);
-    if(num>MAX||num<0) {
-        printf("m = 10000 poichè il modulo inserito è invalido\n");
-        num=MAX;
+    while(1) {
+        printf("Inserisci l'estremo inferiore dell'insieme modulo m (Minimo = 0; Massimo = %d): ", MAX-1);
+        scanf("%d", &num);
+        if(num<MAX && num>=0) {
+                *inf=num;
+                break;
+            }
+        printf("Estremo inferiore inserito non valido.\n");
     }
-    for(int i=1; i<num; i++) {
-        insieme[i]=i;
+    while(1) {
+        printf("Inserisci modulo m (Massimo = %d): ", MAX);
+        scanf("%d", &num);
+        if(num<=MAX && num>*inf) {
+                *modulo=num;
+                break;
+            }
+        printf("modulo inserito non valido.\n");
     }
-    return num;
 }
 
-int scelta() {
+int sceltaFunc(int inf, int modulo, int *mcd) {
     int scelta;
     while(1) {
         printf("\n----------------\nScegli una relazione fra le seguenti\n");
-        printf("1: Addizione (+)\n2: Sottrazione (-)\n3: Moltiplicazione(·)\n4: Divisione(/)\n5: Potenza(a^b)\n6: Radice(b√a)\n7: Logaritmo(log_b(a))\nScelta: ");
+        printf("1: Addizione (+)\n2: Sottrazione (-)\n3: Moltiplicazione(·)\n4: Divisione(/)\nScelta: ");
         scanf("%d", &scelta);
         switch(scelta) {
             case 1:
             case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7: return scelta;
+            case 3:return scelta;
+            case 4:*mcd=mcdFunc(inf, modulo); return scelta;
             default: printf("Scelta non valida\n"); break;
         }
     }
 }
 
-int scorrimento(int insieme[], int count, int scelta, int *neutro_ptr) {
-    int relazione=0;
-    for(int i=0; i<count; i++){
-        relazione+=checkStruttura(insieme[i], count, scelta);
-        if(!(*neutro_ptr))
-            *neutro_ptr=checkNeutro(insieme[i], count, scelta);
+int mcdFunc(int inf, int modulo) {
+    int num, resto, temp;
+    for(int i=inf; i<modulo; i++) {
+        num=i;
+        temp=modulo;
+        while(num!=0) {
+            resto=temp%num;
+            temp=num;
+            num=resto;
+        }
+        if(temp!=1)
+            return 0;
     }
-    return relazione==count;
+    return 1;
 }
 
-int checkStruttura(int insieme[i], int count, int scelta, int &neutro_ptr) {
-    int num=insieme[i], temp;
-    for(int i=0; i<count; i++) {
-        switch(relazione) {
-            case 1: 
-                if(((num+i)%count)==num)
-                    return 1;
-                break;
-            case 2:
-                if(((num-i)+count)==num)
-                    if(((i-num)+count)==num)
-                        return 1;
-                break;
-            case 3:
-                if(((num*i)%count)==num)
-                    return 1;
-                break;
-            case 4:
-                if(num!=0||i!=0) {
-                    
-                    if(temp==1) {
-                        if()
-                            return 1;                       
-                    }
-                }
-                break;
-            case 5:
-                temp=;
-                if(temp==num)
-                    return 1;
-                break;
-            case 6:
-                if(((num+i)%count)==num)
-                    return 1;
-                break;
-            case 7:
-                if(((num+i)%count)==num)
-                    return 1;
-                break;
-            default: break;
+void checkStruttura(int inf, int modulo, int scelta, int *neutro, int *commutativo, int *semigruppo, int *gruppo, int *chiusura) {
+    if(!checkChiusura(inf, modulo, scelta, chiusura))
+        return;
+    checkNeutro(inf, modulo, scelta, neutro);
+    if(scelta==4&&*neutro==-1)
+        return;
+    checkCommutativo(inf, modulo, scelta, commutativo);
+    if(checkSemigruppo(inf, modulo, scelta, semigruppo))
+        checkGruppo(inf, modulo, scelta, *neutro, *commutativo, gruppo);
+}
+
+int checkChiusura(int inf, int modulo, int scelta, int *chiusura) {
+    int inv_j;
+    for(int i=inf; i<modulo; i++) {
+        for(int j=inf; j<modulo; j++) {
+            switch(scelta) {
+                case 1:
+                    if((i+j)%modulo<inf||(i+j)%modulo>=modulo)
+                        return 0;
+                    break;
+                case 2:
+                    if(((i-j)%modulo+modulo)%modulo<inf||((i-j)%modulo+modulo)%modulo>=modulo)
+                        return 0;
+                    break;
+                case 3:
+                    if((i*j)%modulo<inf||(i*j)%modulo>=modulo)
+                        return 0;
+                    break;
+                case 4:
+                    inv_j=inverso(j, modulo);
+                    if(inv_j==-1)
+                        return 0;
+                    if((i*inv_j)%modulo<inf||(i*inv_j)%modulo>=modulo)
+                        return 0;
+                    break;
+                default: return 0;
+            }
         }
     }
-    return 0;
+    return *chiusura=1;
+}
+
+void checkNeutro(int inf, int modulo, int scelta, int *neutro) {
+    int esci, j;
+    for(int i=inf; i<modulo&&*neutro==-1; i++) {
+        esci=0;
+        for(j=inf; j<modulo&&esci==0; j++) {
+            switch (scelta) {
+                case 1:
+                    if((i+j)%modulo!=j||(j+i)%modulo!=j)
+                        esci=1;
+                    break;
+                case 2:
+                   if(((j-i)%modulo+modulo)%modulo!=j||((i-j)%modulo+modulo)%modulo!=j)
+                        esci=1;
+                    break;
+                case 3:
+                    if((i*j)%modulo!=j||(j*i)%modulo!=j)
+                        esci=1;
+                    break;
+                case 4:
+                    if((i*inverso(j, modulo))%modulo!=j||(j*inverso(i, modulo))%modulo!=j)
+                        esci=1;
+                    break;
+                default: break;
+            }
+        }
+        if(esci==0)
+            *neutro=i;
+    }
+}
+
+void checkCommutativo(int inf, int modulo, int scelta, int *commutativo) {
+    int esci=0, j;
+    for(int i=inf; i<modulo&&esci==0; i++) {
+        for(int j=inf; j<modulo&&esci==0; j++) {
+            switch(scelta) {
+                case 1:
+                    if((i+j)%modulo!=(j+i)%modulo)
+                        esci=1;
+                    break;
+                 case 2:
+                    if(((i-j)%modulo+modulo)%modulo!=((j-i)%modulo+modulo)%modulo)
+                        esci=1;
+                    break;
+                case 3:
+                    if((i*j)%modulo!=(j*i)%modulo)
+                        esci=1;
+                    break;
+                case 4:
+                    if((i*inverso(j, modulo))%modulo!=(j*inverso(i, modulo))%modulo)
+                        esci=1;
+                    break;
+                default: break;
+            }
+        }
+    }
+    if(esci==0)
+    *commutativo=1;
+}
+
+int inverso(int num, int modulo) {
+    for(int i=0; i<modulo; i++)
+        if((num*i)%modulo==1)
+            return i;
+    return -1;
+}
+
+int checkSemigruppo(int inf, int modulo, int scelta, int *semigruppo) {
+    int esci=0, ij, jk, sinistra, destra;
+    for(int i=inf; i<modulo&&esci==0; i++) {
+        for(int j=inf; j<modulo&&esci==0; j++) {
+            for(int k=inf; k<modulo&&esci==0; k++) {
+                switch(scelta) {
+                    case 1:
+                        if((i+(j+k))%modulo!=((i+j)+k)%modulo)
+                            esci=1;
+                        break;
+                    case 2:
+                        if(((i-(j-k))+2*modulo)%modulo!=(((i-j)-k)+2*modulo)%modulo)
+                            esci=1;
+                        break;
+                    case 3:
+                        if((i*(j*k))%modulo!=((i*j)*k)%modulo)
+                            esci=1;
+                        break;
+                    case 4:
+                        ij=(i*inverso(j, modulo))%modulo;
+                        jk=(j*inverso(k, modulo))%modulo;
+                        sinistra=(ij*inverso(k, modulo))%modulo;
+                        destra=(i*inverso(jk, modulo))%modulo;
+                        if(sinistra!=destra)
+                            esci=1;
+                        break;
+                    default: break;
+                }
+            }
+        }
+    }
+    if(esci==0)
+        *semigruppo=1;
+    return *semigruppo;
+}
+
+void checkGruppo(int inf, int modulo, int scelta, int neutro, int commutativo, int *gruppo) {
+    int trovato, sinistra, destra;
+    for(int i=inf; i<modulo; i++) {
+        trovato=0;
+        for(int j=inf; j<modulo&&!trovato; j++) {
+            switch(scelta) {
+                case 1:
+                    sinistra=(i+j)%modulo;
+                    destra=(j+i)%modulo;
+                    break;
+                case 2:
+                    sinistra=((i-j)%modulo+modulo)%modulo;
+                    destra=((j-i)%modulo+modulo)%modulo;
+                    break;
+                case 3:
+                    sinistra=(i*j)%modulo;
+                    destra=(j*i)%modulo;
+                    break;
+                case 4:
+                    sinistra=(i*inverso(j, modulo))%modulo;
+                    destra=(j*inverso(i, modulo))%modulo;
+                    break;
+                default:
+                    return;
+            }
+            if(sinistra==neutro && destra==neutro)
+                trovato=1;
+        }
+        if(!trovato)
+            return;
+    }
+    *gruppo=1;
+}
+
+void stampa(int inf, int modulo, int scelta, int neutro, int commutativo, int semigruppo, int gruppo, int chiusura) {
+    printf("\n---------------------------------------\n");
+    if(!chiusura) {
+        printf("L'operazione interna alla struttura algebrica non è definita per ogni elemento di Z modulo m.");
+        return;
+    }
+    switch(scelta) {
+        case 1: printf("+\t|"); break;
+        case 2: printf("-\t|"); break;
+        case 3: printf("·\t|"); break;
+        case 4: printf("/\t|"); break;
+        default: break;
+    }
+    for(int i=inf; i<modulo; i++)
+        printf("\t%d\t", i);
+    printf("\n");
+    for(int i=inf; i<modulo; i++) {
+        printf("%d\t| ", i);
+        for(int j=inf; j<modulo; j++) {
+            switch(scelta) {
+                case 1: printf("\t%d\t", (i+j)%modulo); break;
+                case 2: printf("\t%d\t", ((i-j)%modulo+modulo)%modulo); break;
+                case 3: printf("\t%d\t", (i*j)%modulo); break;
+                case 4: printf("\t%d\t", (i*inverso(j, modulo))%modulo); break;
+                default: break;
+            }
+        }
+        printf("\n");    
+    }
+    printf("\n\n");
+    if(neutro!=-1)
+        printf("Elemento Neutro = %d\n", neutro);
+    else
+        printf("Non esiste elemento neutro\n");
+    if(semigruppo)
+        if(neutro!=-1) 
+            if(gruppo)
+                if(commutativo)
+                    printf("La Struttura Algebrica è un Gruppo Abeliano");
+                else
+                    printf("La Struttura Algebrica è un Gruppo non Abeliano");
+            else
+                if(commutativo)
+                    printf("La Struttura Algebrica è un Monoide commutativo");
+                else 
+                    printf("La Struttura Algebrica è un Monoide non commutativo");   
+        else
+            if(commutativo)
+                printf("La Struttura Algebrica è un Semigruppo commutativo");
+            else
+                printf("La Struttura Algebrica è un Semigruppo non commutativo");
+    else 
+        if(commutativo)
+            printf("La Struttura Algebrica è commutativa");
+        else
+            printf("La Struttura Algebrica non gode di nessuna proprietà");
 }
